@@ -1,21 +1,3 @@
-## Digital Pantry Backend
-
-### Authors
-Austin Christiansen
-
-Jackson Rhea
-
-Logan Ellsworth
-
-## Setup Instructions:
-- Run the following commands
-```bash
-npm install
-nodemon
-```
-- Instead of running 'nodemon', you can create a .vscode folder in the root, and create a tasks.json and a launch.json file as such...
-```json
-//launch.json file...
 {
     // Use IntelliSense to learn about possible attributes.
     // Hover to view descriptions of existing attributes.
@@ -41,19 +23,3 @@ nodemon
         }
     ],
 }
-//tasks.json file
-{
-    "tasks": [
-        {
-            "type": "npm",
-            "script": "server",
-            "problemMatcher": [],
-            "label": "Server",
-            "detail": "nodemon"
-        }
-    ]
-}
-```
-- Once those are create, you should see a new Run and Debug option that says "Server". Click run.
-
-### Development
