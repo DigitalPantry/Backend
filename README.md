@@ -8,6 +8,7 @@ Jackson Rhea
 Logan Ellsworth
 
 ## Setup Instructions:
+- Setup port forwarding in VSCode via the Terminal -> PORTS -> Add Port (enter 8080) -> Authenticate -> Make address visibility public -> Use address in client
 - Run the following commands
 ```bash
 npm install
