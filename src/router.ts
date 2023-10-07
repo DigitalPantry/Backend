@@ -8,6 +8,7 @@ const router = Router();
 router.get('/helloworld', UserController.HelloWorld);
 
 // new user route
-router.post('/users/new', UserController.NewUser);
+router.post('/users', UserController.NewUser);
+router.get('/users', UserController.GetUser)
 
 export default router;

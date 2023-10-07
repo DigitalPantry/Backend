@@ -11,3 +11,10 @@ export async function CreateUser(name: string, email: string) {
         .returningAll()
         .executeTakeFirstOrThrow();
 }
+
+export async function GetUserById(id: number) {
+    return await db.selectFrom('users')
+        .where('id', '=', id)
+        .selectAll()
+        .execute();
+}
