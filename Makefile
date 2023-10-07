@@ -1,5 +1,6 @@
 .PHONY: run-dev
 run-dev: 
+	npm install
 	make compose
 	sleep 1
 	make migrate
