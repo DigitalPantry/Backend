@@ -4,17 +4,9 @@ run-dev:
 	sleep 1
 	make migrate
 	
-.PHONY: dev-win
-dev-win:
-	make compose-win; sleep 1; make migrate;
-
 .PHONY: compose
 compose:
 	docker-compose down && docker-compose up -d
-	
-.PHONY: compose-win
-compose-win:
-	docker-compose down; docker-compose up -d;
 	
 .PHONY: migrate
 migrate:
