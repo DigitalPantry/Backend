@@ -1,6 +1,6 @@
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
-import router from '../router';
+import router from './router';
 import cors from 'cors';
 import { initdb } from './util/database';
 dotenv.config();
