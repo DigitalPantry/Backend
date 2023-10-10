@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { CreateUser, GetUserById } from '../models/userStore'
-import { create } from 'domain';
+import { CreateHousehold } from '../models/householdStore';
 
 // Testing endpoint
 export const HelloWorld = async (req: Request, res: Response) => {
@@ -12,13 +12,16 @@ export const HelloWorld = async (req: Request, res: Response) => {
 }
 
 export const NewUser = async (req: Request, res: Response) => {
-    const { name, email } = req.body;
+    const { first_name, last_name, email, password } = req.body;
+
+    const createdHousehold = await CreateHousehold({name: first_name + "'s Household"});
     
-    const createdUser = await CreateUser(name, email);
+    const createdUser = await CreateUser({first_name, last_name, email, password, household_id: createdHousehold.id});
     
     res.status(200).send({
         success: true,
-        user: createdUser
+        user: createdUser,
+        household: createdHousehold
     });
 }
 

@@ -1,11 +1,8 @@
 import { db } from '../util/database'
-import { HouseholdTable, NewHouseHold } from '../util/types';
+import { HouseholdsTable, NewHousehold } from '../util/types';
 
-export async function CreateHousehold(name: string) {
-    const household: NewHouseHold = {
-        name: name,
-    }
-    return await db.insertInto('household')
+export async function CreateHousehold(household: NewHousehold) {
+    return await db.insertInto('households')
         .values(household)
         .returningAll()
         .executeTakeFirstOrThrow();
