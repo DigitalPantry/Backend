@@ -33,7 +33,7 @@ export async function initdb() {
         });
         const migrationResult: MigrationResultSet = await migrator.migrateToLatest();
         if (migrationResult.error) {
-            throw new Error("initdb() failed. " + migrationResult)
+            throw new Error("initdb() failed. " + JSON.stringify(migrationResult))
         };
     } catch (error) {
         console.log("Failed to initdb. " + error);
