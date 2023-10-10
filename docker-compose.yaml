@@ -1,0 +1,32 @@
+version: "3"
+services:
+  postgres:
+    container_name: pantry-postgres
+    image: postgres
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: p@ntry!
+      POSTGRES_DB: local_pantry
+    volumes:
+      - postgresData:/var/lib/postgresql/data/
+      - ./src/db/migrations:/docker-entrypoint-initdb.d
+  pgAdmin:
+    container_name: pantry-pgadmin
+    image: dpage/pgadmin4
+    restart: unless-stopped
+    ports:
+      - 5050:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: digit@lpantry!
+    volumes:
+      - ./dist/pgadmin:/root/.pgadmin
+      - ./src/servers.json:/pgadmin4/servers.json
+    depends_on:
+      - postgres
+
+volumes:
+    postgresData:
+
