@@ -1,6 +1,7 @@
 import Router from 'express';
 
-const UserController = require('./controllers/userController')
+const UserController = require('./controllers/userController');
+const HouseholdController = require('./controllers/householdController');
 
 const router = Router();
 
@@ -9,6 +10,9 @@ router.get('/helloworld', UserController.HelloWorld);
 
 // new user route
 router.post('/users', UserController.NewUser);
-router.get('/users', UserController.GetUser)
+router.get('/users', UserController.GetUser);
+router.delete('/household/users', HouseholdController.RemoveUser);
+router.post('/household/users', HouseholdController.NewHouseholdUser);
+router.get('/household/users', HouseholdController.GetHouseholdUsers);
 
 export default router;
