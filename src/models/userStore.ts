@@ -14,3 +14,16 @@ export async function GetUserById(id: number) {
         .selectAll()
         .execute();
 }
+
+export async function GetUsersByHousehold(id: number) {
+    return await db.selectFrom('users')
+        .where('household_id', '=', id)
+        .selectAll()
+        .execute();
+}
+
+export async function RemoveUserFromHousehold(id: number) {
+    return await db.deleteFrom('users')
+        .where('id', '=', id)
+        .execute();
+}

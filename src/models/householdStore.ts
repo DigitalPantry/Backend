@@ -8,7 +8,7 @@ export async function CreateHousehold(household: NewHousehold) {
         .executeTakeFirstOrThrow();
 }
 
-export async function getHouseholdById(id: number) {
+export async function GetHouseholdById(id: number) {
     return await db.selectFrom('users')
         .where('id', '=', id)
         .selectAll()
