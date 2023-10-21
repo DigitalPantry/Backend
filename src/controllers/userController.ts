@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { CreateUser, GetUserById } from '../models/userStore'
+import { CreateUser, GetUserById, UpdateUserById } from '../models/userStore'
 import { CreateHousehold } from '../models/householdStore';
 
 // Testing endpoint
@@ -40,5 +40,26 @@ export const GetUser = async (req: Request, res: Response) => {
     res.status(200).send({
         success: true,
         user: user
+    });
+}
+
+export const UpdateUser = async (req: Request, res: Response) => {
+    const { idString, first_name, last_name, email, password, household_id } = req.body;
+    
+    if (!idString) {
+        return res.status(400).send({
+            success: false,
+            error: "invalid id parameter"
+        })
+    }
+
+    const id = +idString
+
+    const updatedUser = await UpdateUserById(id, {id, first_name, last_name, email, password, household_id})
+
+    console.log(updatedUser)
+
+    res.status(200).send({
+        success: true,
     });
 }

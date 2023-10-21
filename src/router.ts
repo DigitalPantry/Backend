@@ -11,6 +11,11 @@ router.get('/helloworld', UserController.HelloWorld);
 // new user route
 router.post('/users', UserController.NewUser);
 router.get('/users', UserController.GetUser);
+
+//edit user route
+router.post('/users/UpdateUser', UserController.UpdateUser);
+
+// household related
 router.delete('/household/users', HouseholdController.RemoveUser);
 router.post('/household/users', HouseholdController.NewHouseholdUser);
 router.get('/household/users', HouseholdController.GetHouseholdUsers);
