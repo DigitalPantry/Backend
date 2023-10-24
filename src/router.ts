@@ -15,6 +15,9 @@ router.get('/users', UserController.GetUser);
 //edit user route
 router.post('/users/UpdateUser', UserController.UpdateUser);
 
+//login
+router.post('/login', UserController.Login);
+
 // household related
 router.delete('/household/users', HouseholdController.RemoveUser);
 router.post('/household/users', HouseholdController.NewHouseholdUser);
