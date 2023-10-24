@@ -35,3 +35,10 @@ export async function UpdateUserById(id: number, user: UserUpdate) {
         .where('id', '=', id)
         .execute();
 }
+
+export async function GetUserByEmail(email: string) {
+    return await db.selectFrom('users')
+        .where('email', '=', email)
+        .selectAll()
+        .execute();
+}

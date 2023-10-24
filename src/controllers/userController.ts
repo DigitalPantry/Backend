@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
-import { CreateUser, GetUserById, UpdateUserById } from '../models/userStore'
+import { CreateUser, GetUserById, UpdateUserById, GetUserByEmail } from '../models/userStore'
 import { CreateHousehold } from '../models/householdStore';
+import bcrypt from 'bcrypt';
+
+const SALT_ROUNDS = 10;
 
 // Testing endpoint
 export const HelloWorld = async (req: Request, res: Response) => {
@@ -11,12 +14,41 @@ export const HelloWorld = async (req: Request, res: Response) => {
     });
 }
 
+export const Login = async (req: Request, res: Response) => {
+    const { email, password } = req.body;
+
+    const existingUser = await GetUserByEmail(email);
+
+    if (existingUser) {
+        const validPassword = await checkPassword(password, existingUser[0].password);
+
+        if (validPassword) {
+            res.status(200).send({
+                user: existingUser,
+                success: true,
+                message: "Login successful.",
+            });
+        } else {
+            res.status(400).send({
+                user: null,
+                success: false,
+                message: "Invalid password",
+            });
+        }
+    } else {
+        res.status(400).send({
+            success: false,
+            error: "Email not found.",
+        })
+    }
+}
+
 export const NewUser = async (req: Request, res: Response) => {
     const { first_name, last_name, email, password } = req.body;
 
     const createdHousehold = await CreateHousehold({name: first_name + "'s Household"});
-    
-    const createdUser = await CreateUser({first_name, last_name, email, password, household_id: createdHousehold.id});
+    const hashedPassword = await hashPassword(password);
+    const createdUser = await CreateUser({first_name, last_name, email, password: hashedPassword, household_id: createdHousehold.id});
     
     res.status(200).send({
         success: true,
@@ -61,5 +93,27 @@ export const UpdateUser = async (req: Request, res: Response) => {
 
     res.status(200).send({
         success: true,
+    });
+}
+
+function checkPassword(clearText: string, existing: string): Promise<boolean> {
+    return new Promise((fullfill, reject) => {
+        bcrypt.compare(clearText, existing, (error, res) => {
+            if (error)
+                reject(error);
+            else
+                fullfill(res);
+        });
+    });
+}
+
+function hashPassword(clearText: string): Promise<string> {
+    return new Promise((fulfill, reject) => {
+        bcrypt.hash(clearText, SALT_ROUNDS, (error, hash) => {
+            if (error)
+                reject(error);
+            else
+                fulfill(hash);
+        });
     });
 }
