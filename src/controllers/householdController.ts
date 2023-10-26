@@ -3,21 +3,23 @@ import { CreateUser, GetUsersByHousehold, RemoveUserFromHousehold } from '../mod
 import { GetHouseholdById } from '../models/householdStore';
 
 export const GetHouseholdUsers = async (req: Request, res: Response) => {
-    const { householdString } = req.query;
-    if (!householdString) {
-        return res.status(400).send({
+    const { id } = req.query;
+    
+    if (!id) {
+        return res.status(200).send({
             success: false,
-            error: "invalid household parameter"
+            message: "invalid household parameter"
         })
     }
     
-    const id = +householdString;
-    
-    const users = await GetUsersByHousehold(id);
-    
+    const idInt = +id;
+    const users = await GetUsersByHousehold(idInt);
+
     res.status(200).send({
+        id,
+        users: users,
         success: true,
-        users: users
+        message: "",
     });
 }
 
@@ -26,9 +28,9 @@ export const NewHouseholdUser =  async (req: Request, res: Response) => {
     
     const { householdString } = req.query;
     if (!householdString) {
-        return res.status(400).send({
+        return res.status(200).send({
             success: false,
-            error: "invalid household parameter"
+            message: "invalid household parameter"
         })
     }
     
@@ -36,9 +38,9 @@ export const NewHouseholdUser =  async (req: Request, res: Response) => {
     
     const household = await GetHouseholdById(id);
     if (!household) {
-        return res.status(400).send({
+        return res.status(200).send({
             success: false,
-            error: "invalid household id"
+            message: "invalid household id"
         })
     }
     
@@ -54,16 +56,16 @@ export const RemoveUser = async (req: Request, res: Response) => {
     const { idString, householdString } = req.query;
     
     if (!idString) {
-        return res.status(400).send({
+        return res.status(200).send({
             success: false,
-            error: "invalid id parameter"
+            message: "invalid id parameter"
         })
     }
     
     if (!householdString) {
-        return res.status(400).send({
+        return res.status(200).send({
             success: false,
-            error: "invalid household parameter"
+            message: "invalid household parameter"
         })
     }
     
@@ -79,9 +81,9 @@ export const RemoveUser = async (req: Request, res: Response) => {
                     success: true
                 });
             } else {
-                res.status(500).send({
+                res.status(200).send({
                     success: false,
-                    error: "unknown error removing user from household"
+                    message: "unknown error removing user from household"
                 });
             }
         }
@@ -89,6 +91,6 @@ export const RemoveUser = async (req: Request, res: Response) => {
     
     res.status(404).send({
         success: false,
-        error: "user not found"
+        message: "user not found"
     });
 }
