@@ -19,26 +19,26 @@ export const Login = async (req: Request, res: Response) => {
 
     const existingUser = await GetUserByEmail(email);
 
-    if (existingUser) {
+    if (existingUser?.length > 0) {
         const validPassword = await checkPassword(password, existingUser[0].password);
 
         if (validPassword) {
             res.status(200).send({
-                user: existingUser,
+                user: existingUser[0],
                 success: true,
                 message: "Login successful.",
             });
         } else {
-            res.status(400).send({
+            res.status(200).send({
                 user: null,
                 success: false,
                 message: "Invalid password",
             });
         }
     } else {
-        res.status(400).send({
+        res.status(200).send({
             success: false,
-            error: "Email not found.",
+            message: "Email not found.",
         })
     }
 }
@@ -48,21 +48,22 @@ export const NewUser = async (req: Request, res: Response) => {
 
     const createdHousehold = await CreateHousehold({name: first_name + "'s Household"});
     const hashedPassword = await hashPassword(password);
-    const createdUser = await CreateUser({first_name, last_name, email, password: hashedPassword, household_id: createdHousehold.id});
+    const createdUser = await CreateUser({first_name, last_name, email: email?.toLowerCase(), password: hashedPassword, household_id: createdHousehold.id});
     
     res.status(200).send({
-        success: true,
         user: createdUser,
-        household: createdHousehold
+        household: createdHousehold,
+        success: true,
+        message: "Registration successful."
     });
 }
 
 export const GetUser = async (req: Request, res: Response) => {
     const { idString } = req.query;
     if (!idString) {
-        return res.status(400).send({
+        return res.status(200).send({
             success: false,
-            error: "invalid id parameter"
+            message: "invalid id parameter"
         })
     }
     const id = +idString;
@@ -76,18 +77,17 @@ export const GetUser = async (req: Request, res: Response) => {
 }
 
 export const UpdateUser = async (req: Request, res: Response) => {
-    const { idString, first_name, last_name, email, password, household_id } = req.body;
-    
-    if (!idString) {
-        return res.status(400).send({
+    const { id, first_name, last_name, email, password, household_id } = req.body;
+
+    if (!id) {
+        return res.status(200).send({
             success: false,
-            error: "invalid id parameter"
+            message: "invalid id parameter"
         })
     }
 
-    const id = +idString
-
-    const updatedUser = await UpdateUserById(id, {id, first_name, last_name, email, password, household_id})
+    const hashedPassword = await hashPassword(password);
+    const updatedUser = await UpdateUserById(id, {id, first_name, last_name, email, password: hashedPassword, household_id})
 
     console.log(updatedUser)
 

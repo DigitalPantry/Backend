@@ -30,7 +30,7 @@ export async function RemoveUserFromHousehold(id: number) {
 
 export async function UpdateUserById(id: number, user: UserUpdate) {
     return await db.updateTable('users')
-        .set({ first_name: user.first_name, last_name: user.last_name, email: user.email, 
+        .set({ first_name: user.first_name, last_name: user.last_name, email: user.email?.toLowerCase(), 
                 password: user.password, household_id: user.household_id })
         .where('id', '=', id)
         .execute();
@@ -38,7 +38,7 @@ export async function UpdateUserById(id: number, user: UserUpdate) {
 
 export async function GetUserByEmail(email: string) {
     return await db.selectFrom('users')
-        .where('email', '=', email)
+        .where('email', '=', email?.toLowerCase())
         .selectAll()
         .execute();
 }
