@@ -3,6 +3,7 @@ import { ColumnType, Generated, Insertable, Selectable, Updateable } from 'kysel
 export interface Database {
   households: HouseholdsTable
   users: UsersTable
+  items: ItemsTable
 }
 
 //HOUSEHOLD
@@ -34,6 +35,21 @@ export type NewUser = Insertable<UsersTable>
 export type UserUpdate = Updateable<UsersTable>
 
 //ITEM
+export interface ItemsTable {
+  id: Generated<number>
+  name: string
+  category: string
+  expiration: Date
+  quantity: string
+  household_id: number
+  found_in: string
+  created_at: ColumnType<Date, string | undefined, never>
+  updated_at: ColumnType<Date, string | undefined, never>
+}
+
+export type Item = Selectable<ItemsTable>
+export type NewItem = Insertable<ItemsTable>
+export type ItemUpdate = Updateable<ItemsTable>
 
 //RECIPE
 
