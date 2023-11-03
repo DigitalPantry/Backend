@@ -25,7 +25,8 @@ router.post('/household/users', HouseholdController.NewHouseholdUser);
 router.get('/household/users', HouseholdController.GetHouseholdUsers);
 
 //item related
-router.post('/items', ItemController.UpdateItem)
+router.post('/items', ItemController.UpsertItem)
 router.delete('/items', ItemController.RemoveItem)
+router.get('/items', ItemController.GetHouseholdItems)
 
 export default router;
