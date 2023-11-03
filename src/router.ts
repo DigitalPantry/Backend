@@ -2,6 +2,7 @@ import Router from 'express';
 
 const UserController = require('./controllers/userController');
 const HouseholdController = require('./controllers/householdController');
+const ItemController = require('./controllers/itemController');
 
 const router = Router();
 
@@ -22,5 +23,9 @@ router.post('/login', UserController.Login);
 router.delete('/household/users', HouseholdController.RemoveUser);
 router.post('/household/users', HouseholdController.NewHouseholdUser);
 router.get('/household/users', HouseholdController.GetHouseholdUsers);
+
+//item related
+router.post('/items', ItemController.UpdateItem)
+router.delete('/items', ItemController.RemoveItem)
 
 export default router;

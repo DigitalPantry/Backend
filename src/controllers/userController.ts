@@ -77,23 +77,24 @@ export const GetUser = async (req: Request, res: Response) => {
 }
 
 export const UpdateUser = async (req: Request, res: Response) => {
-    const { id, first_name, last_name, email, password, household_id } = req.body;
+    const { idString, first_name, last_name, email, password, household_id } = req.body;
 
-    if (!id) {
+    if (!idString) {
         return res.status(200).send({
             success: false,
             message: "invalid id parameter"
         })
+    } else {
+        const id = +idString
+
+        const hashedPassword = await hashPassword(password);
+        const updatedUser = await UpdateUserById(id, {id, first_name, last_name, email, password: hashedPassword, household_id})
+
+        res.status(200).send({
+            success: true,
+            message: "User successfully updated"
+        });
     }
-
-    const hashedPassword = await hashPassword(password);
-    const updatedUser = await UpdateUserById(id, {id, first_name, last_name, email, password: hashedPassword, household_id})
-
-    console.log(updatedUser)
-
-    res.status(200).send({
-        success: true,
-    });
 }
 
 function checkPassword(clearText: string, existing: string): Promise<boolean> {
