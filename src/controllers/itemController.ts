@@ -3,25 +3,33 @@ import { RemoveItemById, UpdateItemById, InsertItem, GetItemsByHousehold } from 
 import { NewItem } from '../util/types'
 
 export const UpsertItem = async (req: Request, res: Response) => {
-    const { idString } = req.body;
-    if (!idString) {
+    const { id } = req.body;
+
+    if (!id) {
          return CreateItem(req, res);
     }
     return UpdateItem(req, res);
 }
 
 export const UpdateItem = async (req: Request, res: Response) => {
-    const { idString, name, category, expiration, quantity, household_id, found_in } = req.body
+    const { id, name, category, expiration, quantity, household_id, found_in } = req.body
 
-    if (!idString) {
+    if (!id) {
         return res.status(400).send({
             success: false,
             message: "Invalid id parameter"
         })
     }
-
-    const id = +idString
-    const updatedItem = await UpdateItemById(idString, {id, name, category, expiration, quantity, household_id, found_in})
+    const item = {
+        id: +id,
+        name: name,
+        category: category,
+        expiration: expiration,
+        quantity: quantity,
+        household_id: household_id,
+        found_in: found_in
+    }
+    const updatedItem = await UpdateItemById(+id, item)
 
     res.status(200).send({
         success: true,
@@ -102,7 +110,6 @@ export const GetHouseholdItems = async (req: Request, res: Response) => {
         minQuantity: req.query.minQuantity,
         found_in: req.query.found_in
     }
-    
     
     const result = await GetItemsByHousehold(id, order, search, filters);
     if (!result) {
