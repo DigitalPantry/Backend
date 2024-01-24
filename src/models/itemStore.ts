@@ -11,7 +11,7 @@ export async function InsertItem (item: NewItem) {
 
 export async function UpdateItemById(id: number, item: ItemUpdate) {
     return await db.updateTable('items')
-        .set({name: item.name, category: item.category, expiration: item.expiration, quantity: item.quantity,
+        .set({name: item.name, category: item.category, expiration: item.expiration, units: item.units, quantity: item.quantity,
                 household_id: item.household_id, found_in: item.found_in})
         .where('id', '=', id)
         .execute();
