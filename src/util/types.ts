@@ -41,6 +41,7 @@ export interface ItemsTable {
   category: string
   expiration: Date
   quantity: string
+  units: string
   household_id: number
   found_in: string
   created_at: ColumnType<Date, string | undefined, never>
@@ -52,5 +53,19 @@ export type NewItem = Insertable<ItemsTable>
 export type ItemUpdate = Updateable<ItemsTable>
 
 //RECIPE
+export interface RecipesTable {
+  id: Generated<number>
+  name: string
+  household_id: number
+  ingredients: string[]
+  directions: string[]
+  created_at: ColumnType<Date, string | undefined, never>
+  updated_at: ColumnType<Date, string | undefined, never>
+}
+
+
+export type Recipe = Selectable<RecipesTable>
+export type NewRecipe = Insertable<RecipesTable>
+export type RecipeUpdate = Updateable<RecipesTable>
 
 //LIST?
