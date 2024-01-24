@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { CreateUser, GetUsersByHousehold, RemoveUserFromHousehold } from '../models/userStore'
-import { GetHouseholdById } from '../models/householdStore';
+import { CreateHousehold, GetHouseholdById } from '../models/householdStore';
 
 export const GetHouseholdUsers = async (req: Request, res: Response) => {
     const { id } = req.query;
@@ -53,7 +53,7 @@ export const NewHouseholdUser =  async (req: Request, res: Response) => {
 }
 
 export const RemoveUser = async (req: Request, res: Response) => {
-    const { idString, householdString } = req.query;
+    const { idString, houseId } = req.query;
     
     if (!idString) {
         return res.status(200).send({
@@ -62,7 +62,7 @@ export const RemoveUser = async (req: Request, res: Response) => {
         })
     }
     
-    if (!householdString) {
+    if (!houseId) {
         return res.status(200).send({
             success: false,
             message: "invalid household parameter"
@@ -70,15 +70,19 @@ export const RemoveUser = async (req: Request, res: Response) => {
     }
     
     const userId = +idString;
-    const householdId = +householdString;
+    const householdId = +houseId;
     
     const users = await GetUsersByHousehold(householdId);
     for (var user of users) {
         if (user.id === userId) {
-            const result = await RemoveUserFromHousehold(userId);
+            let newHouseId = await CreateHousehold({name: user.first_name + "'s Household"});
+            const result = await RemoveUserFromHousehold(userId, newHouseId.id);
             if (!!result) {
+                const updatedUsers = await GetUsersByHousehold(householdId);
                 return res.status(200).send({
-                    success: true
+                    updatedUsers,
+                    success: true,
+                    message: "Successfully removed user from household"
                 });
             } else {
                 res.status(200).send({

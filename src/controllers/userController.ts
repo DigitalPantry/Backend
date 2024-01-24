@@ -58,6 +58,19 @@ export const NewUser = async (req: Request, res: Response) => {
     });
 }
 
+export const NewHHMember = async(req: Request, res: Response) => {
+    const { first_name, last_name, email, password, household_id} = req.body
+    
+    const hashedPassword = await hashPassword(password); 
+    const newMember = await CreateUser({first_name, last_name, email: email?.toLowerCase(), password: hashedPassword, household_id: household_id});
+
+    res.status(200).send({
+        user: newMember,
+        success: true,
+        message: "New Member Successfully Added"
+    })
+}
+
 export const GetUser = async (req: Request, res: Response) => {
     const { idString } = req.query;
     if (!idString) {

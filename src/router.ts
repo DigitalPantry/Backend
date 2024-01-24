@@ -23,6 +23,7 @@ router.post('/login', UserController.Login);
 router.delete('/household/users', HouseholdController.RemoveUser);
 router.post('/household/users', HouseholdController.NewHouseholdUser);
 router.get('/household/users', HouseholdController.GetHouseholdUsers);
+router.post('/users/newMember', UserController.NewHHMember);
 
 //item related
 router.post('/items', ItemController.UpsertItem)

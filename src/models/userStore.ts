@@ -22,8 +22,9 @@ export async function GetUsersByHousehold(id: number) {
         .execute();
 }
 
-export async function RemoveUserFromHousehold(id: number) {
-    return await db.deleteFrom('users')
+export async function RemoveUserFromHousehold(id: number, houseId: number) {
+    return await db.updateTable('users')
+        .set({household_id: houseId})
         .where('id', '=', id)
         .execute();
 }
