@@ -12,7 +12,7 @@ export const UpsertItem = async (req: Request, res: Response) => {
 }
 
 export const UpdateItem = async (req: Request, res: Response) => {
-    const { id, name, category, expiration, quantity, household_id, found_in } = req.body
+    const { id, name, category, expiration, units, quantity, household_id, found_in } = req.body
 
     if (!id) {
         return res.status(400).send({
@@ -20,15 +20,18 @@ export const UpdateItem = async (req: Request, res: Response) => {
             message: "Invalid id parameter"
         })
     }
+
     const item = {
         id: +id,
         name: name,
         category: category,
+        units: units,
         expiration: expiration,
         quantity: quantity,
         household_id: household_id,
         found_in: found_in
     }
+    
     const updatedItem = await UpdateItemById(+id, item)
 
     res.status(200).send({
@@ -57,7 +60,7 @@ export const RemoveItem = async (req: Request, res: Response) => {
 }
 
 export const CreateItem = async (req: Request, res: Response) => {
-    const { name, expiration, quantity, household_id, category, found_in } = req.body;
+    const { name, expiration, quantity, units, household_id, category, found_in } = req.body;
     
     if (!household_id) {
         return res.status(400).send({
@@ -73,6 +76,7 @@ export const CreateItem = async (req: Request, res: Response) => {
         category: category,
         expiration: expiration,
         quantity: quantity,
+        units: units,
         household_id: household_id,
         found_in: found_in
     }
