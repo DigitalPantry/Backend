@@ -4,6 +4,7 @@ export interface Database {
   households: HouseholdsTable
   users: UsersTable
   items: ItemsTable
+  recipes: RecipesTable
 }
 
 //HOUSEHOLD
