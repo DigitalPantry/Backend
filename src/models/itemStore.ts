@@ -54,3 +54,12 @@ export async function GetItemsByHousehold (household_id: number, order: any, sea
         
     return await query.selectAll().execute();
 }
+
+// Used for AI recipe gen, only gets the names
+export async function GetItemNamesByHousehold (household_id: number) {
+    let query = db.selectFrom('items')
+        .where('household_id', '=', household_id);
+        //.where("expiration", ">=", new Date()); // Dont use expired ingredients
+        
+    return await query.select("name").execute();
+}

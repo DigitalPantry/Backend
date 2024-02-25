@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { RemoveRecipeById, UpdateRecipeById, InsertRecipe, GetRecipesByHousehold } from '../models/recipeStore'
 import { NewRecipe } from '../util/types'
+import { GetItemNamesByHousehold, GetItemsByHousehold } from "../models/itemStore";
+import { GenerateRecipe } from "../services/aiService";
 
 export const UpsertRecipe = async (req: Request, res: Response) => {
     const { id } = req.body;
@@ -114,5 +116,37 @@ export const GetHouseholdRecipes = async (req: Request, res: Response) => {
     res.status(200).send({
         success: true,
         recipes: result
+    });
+}
+
+export const GetAIRecipe = async (req: Request, res: Response) => {
+    const { household_id } = req.query;
+    
+    if (!household_id) {
+        return res.status(400).send({
+            success: false,
+            message: "Invalid household_id parameter"
+        });
+    }
+    const id = +household_id;
+    
+    // Get a list of ingredients in the current household pantry
+    const ingredientResult = await GetItemNamesByHousehold(id);
+    let ingredients:string[] = [];
+    ingredientResult.map(i => {
+        ingredients.push(i.name);
+    })
+    const generatedRecipe = await GenerateRecipe(id, ingredients);
+    if (generatedRecipe === null) {
+        res.status(500).send({
+            success: false,
+            recipe: null
+        });
+        return
+    }
+
+    res.status(200).send({
+        success: true,
+        recipe: generatedRecipe
     });
 }
