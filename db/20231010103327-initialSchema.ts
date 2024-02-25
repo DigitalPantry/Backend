@@ -23,6 +23,7 @@ export async function up(db: Kysely<any>): Promise<void> {
         .addColumn('household_id', 'integer', (col) =>
             col.references('households.id').notNull()
         )
+        .addColumn('house_owner', 'integer', (col) => col.notNull())
         .addColumn('created_at', 'timestamp', (col) =>
             col.defaultTo(sql`now()`).notNull()
         )
@@ -52,6 +53,7 @@ export async function up(db: Kysely<any>): Promise<void> {
             email: 'test@gmail.com',
             password: 'password123',
             household_id: 1,
+            house_owner: 1
         })
         .executeTakeFirst()
 }
