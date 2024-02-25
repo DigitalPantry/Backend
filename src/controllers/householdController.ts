@@ -44,7 +44,7 @@ export const NewHouseholdUser =  async (req: Request, res: Response) => {
         })
     }
     
-    const createdUser = await CreateUser({first_name, last_name, email, password, household_id: id});
+    const createdUser = await CreateUser({first_name, last_name, email, password, house_owner: 0, household_id: id});
     
     res.status(200).send({
         success: true,

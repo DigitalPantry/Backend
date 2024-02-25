@@ -27,6 +27,7 @@ export interface UsersTable {
   email: string
   password: string
   household_id: number
+  house_owner: number
   created_at: ColumnType<Date, string | undefined, never>
   updated_at: ColumnType<Date, string | undefined, never>
 }

@@ -48,7 +48,7 @@ export const NewUser = async (req: Request, res: Response) => {
 
     const createdHousehold = await CreateHousehold({name: first_name + "'s Household"});
     const hashedPassword = await hashPassword(password);
-    const createdUser = await CreateUser({first_name, last_name, email: email?.toLowerCase(), password: hashedPassword, household_id: createdHousehold.id});
+    const createdUser = await CreateUser({first_name, last_name, email: email?.toLowerCase(), password: hashedPassword, house_owner: 1, household_id: createdHousehold.id});
     
     res.status(200).send({
         user: createdUser,
@@ -62,7 +62,7 @@ export const NewHHMember = async(req: Request, res: Response) => {
     const { first_name, last_name, email, password, household_id} = req.body
     
     const hashedPassword = await hashPassword(password); 
-    const newMember = await CreateUser({first_name, last_name, email: email?.toLowerCase(), password: hashedPassword, household_id: household_id});
+    const newMember = await CreateUser({first_name, last_name, email: email?.toLowerCase(), password: hashedPassword, house_owner: 0, household_id: household_id});
 
     res.status(200).send({
         user: newMember,
@@ -90,18 +90,18 @@ export const GetUser = async (req: Request, res: Response) => {
 }
 
 export const UpdateUser = async (req: Request, res: Response) => {
-    const { idString, first_name, last_name, email, password, household_id } = req.body;
+    const { id, first_name, last_name, email, password, household_id } = req.body;
 
-    if (!idString) {
+    if (!id) {
         return res.status(200).send({
             success: false,
             message: "invalid id parameter"
         })
     } else {
-        const id = +idString
+        const idNum = +id
 
         const hashedPassword = await hashPassword(password);
-        const updatedUser = await UpdateUserById(id, {id, first_name, last_name, email, password: hashedPassword, household_id})
+        const updatedUser = await UpdateUserById(idNum, {id, first_name, last_name, email, password: hashedPassword, household_id})
 
         res.status(200).send({
             success: true,
