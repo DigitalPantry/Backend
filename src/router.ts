@@ -35,5 +35,6 @@ router.get('/items', ItemController.GetHouseholdItems)
 router.post('/recipes', RecipeController.UpsertRecipe)
 router.delete('/recipes', RecipeController.RemoveRecipe)
 router.get('/recipes', RecipeController.GetHouseholdRecipes)
+router.get('/recipes/ai', RecipeController.GetAIRecipe)
 
 export default router;
