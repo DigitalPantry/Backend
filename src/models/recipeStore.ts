@@ -35,6 +35,6 @@ export async function GetRecipesByHousehold (household_id: number, order: any, s
     if(!!filters.name) {
         query = query.where("name", "=", filters.name);
     }
-        console.log(query)
+
     return await query.selectAll().execute();
 }
