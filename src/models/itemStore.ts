@@ -58,7 +58,8 @@ export async function GetItemsByHousehold (household_id: number, order: any, sea
 // Used for AI recipe gen, only gets the names
 export async function GetItemNamesByHousehold (household_id: number) {
     let query = db.selectFrom('items')
-        .where('household_id', '=', household_id);
+        .where('household_id', '=', household_id)
+        .where('found_in', '=', 'Inventory');
         //.where("expiration", ">=", new Date()); // Dont use expired ingredients
         
     return await query.select("name").execute();
