@@ -61,6 +61,8 @@ export interface RecipesTable {
   household_id: number
   ingredients: string[]
   directions: string[]
+  serves: string | undefined
+  time: string | undefined
   created_at: ColumnType<Date, string | undefined, never>
   updated_at: ColumnType<Date, string | undefined, never>
 }
