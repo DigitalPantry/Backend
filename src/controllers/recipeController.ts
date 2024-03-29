@@ -14,7 +14,7 @@ export const UpsertRecipe = async (req: Request, res: Response) => {
 }
 
 export const UpdateRecipe = async (req: Request, res: Response) => {
-    const { id, name, household_id, directions, ingredients  } = req.body
+    const { id, name, household_id, directions, ingredients, serves, time  } = req.body
 
     if (!id) {
         return res.status(400).send({
@@ -28,9 +28,12 @@ export const UpdateRecipe = async (req: Request, res: Response) => {
         household_id: household_id,
         directions: directions,
         ingredients: ingredients,
+        serves: serves,
+        units: time
     }
     
     const updatedItem = await UpdateRecipeById(+id, item)
+    
 
     res.status(200).send({
         success: true,
@@ -58,7 +61,7 @@ export const RemoveRecipe = async (req: Request, res: Response) => {
 }
 
 export const CreateRecipe = async (req: Request, res: Response) => {
-    const { name, household_id, directions, ingredients } = req.body;
+    const { name, household_id, directions, ingredients, serves, time} = req.body;
     
     if (!household_id) {
         return res.status(400).send({
@@ -74,6 +77,8 @@ export const CreateRecipe = async (req: Request, res: Response) => {
         household_id: household_id,
         directions: directions,
         ingredients: ingredients,
+        serves: serves,
+        time: time
     }
     
     const result = await InsertRecipe(recipe);
@@ -112,6 +117,7 @@ export const GetHouseholdRecipes = async (req: Request, res: Response) => {
             message: "Unknown error executing db query"
         });
     }
+    console.log(result);
     
     res.status(200).send({
         success: true,
