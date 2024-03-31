@@ -11,7 +11,7 @@ export async function InsertRecipe (recipe: NewRecipe) {
 export async function UpdateRecipeById(id: number, recipe: RecipeUpdate) {
     return await db.updateTable('recipes')
         .set({name: recipe.name, directions: recipe.directions, ingredients: recipe.ingredients,
-                household_id: recipe.household_id})
+                household_id: recipe.household_id, serves: recipe.serves, time: recipe.time})
         .where('id', '=', id)
         .execute();
 }
