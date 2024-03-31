@@ -29,12 +29,12 @@ export const UpdateRecipe = async (req: Request, res: Response) => {
         directions: directions,
         ingredients: ingredients,
         serves: serves,
-        units: time
+        time: time
     }
     
     const updatedItem = await UpdateRecipeById(+id, item)
-    
 
+    
     res.status(200).send({
         success: true,
         message: "Recipe successfully updated"
